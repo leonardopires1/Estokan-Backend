@@ -67,4 +67,20 @@ model equipament {
   functionary Funcionary? @relation(fields: [functionaryId], references: [id])
   workId      Int?
   work        Work?    @relation(fields: [workId], references: [id])
+  type        TypeEquipament
+  status      statusEquipament
+}
+
+enum TypeEquipament {
+  MAQUINA
+  VEICULO
+  EPI
+  OUTROS
+}
+
+enum statusEquipament {
+  DISPONIVEL
+  EM_USO
+  MANUTENCAO
+  PERDIDO
 }

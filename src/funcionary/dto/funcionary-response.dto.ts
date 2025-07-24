@@ -13,9 +13,6 @@ export class FuncionaryResponseDto {
     @ApiProperty({ example: 'maria.silva@example.com', description: 'Email do funcionário' })
     email: string;
 
-    @ApiProperty({ example: 'password123', description: 'Senha do funcionário' })
-    password: string;
-
     @ApiProperty({ example: '2024-07-24T12:00:00Z', description: 'Data de criação' })
     createdAt: Date;
 

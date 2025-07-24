@@ -1,13 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { FuncionaryService } from './funcionary.service';
 import { CreateFuncionaryDto } from './dto/create-funcionary.dto';
 import { UpdateFuncionaryDto } from './dto/update-funcionary.dto';
 import { FindFuncionaryDto } from './dto/find-funcionary.dto';
 import { FuncionaryResponseDto } from './dto/funcionary-response.dto';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @ApiTags('functionaries')
 @Controller('funcionary')
+@UseGuards(JwtAuthGuard) // Proteger todo o controller
+@ApiBearerAuth() // Documentar que precisa de autenticação
 export class FuncionaryController {
   constructor(private readonly funcionaryService: FuncionaryService) {}
 
