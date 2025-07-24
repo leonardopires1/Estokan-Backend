@@ -6,6 +6,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { FindUserDto } from './dto/find-user.dto';
 import { UserResponseDto } from './dto/user-response.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { Public } from '../auth/decorators/public.decorator';
 
 @ApiTags('users')
 @Controller('user')
@@ -15,6 +16,7 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
+  @Public()
   @ApiOperation({ summary: 'Criar um novo usuário' })
   @ApiResponse({ status: 201, description: 'Usuário criado com sucesso.', type: UserResponseDto })
   create(@Body() createUserDto: CreateUserDto): Promise<UserResponseDto> {

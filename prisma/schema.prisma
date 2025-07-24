@@ -28,7 +28,7 @@ model Funcionary {
   updatedAt DateTime @updatedAt
   workId    Int?
   work      Work?    @relation(fields: [workId], references: [id])
-  equipaments equipament[]
+  equipaments Equipament[]
 }
 
 model Work {
@@ -40,7 +40,7 @@ model Work {
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
   functionaries Funcionary[]
-  equipaments   equipament[]
+  equipaments   Equipament[]
 }
 
 model Supplier {
@@ -48,14 +48,13 @@ model Supplier {
   cnpj      String   @unique
   name      String
   email     String   @unique
-  password  String
   location  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  equipaments equipament[]
+  equipaments Equipament[]
 }
 
-model equipament {
+model Equipament {
   id          Int      @id @default(autoincrement())
   name        String
   description String

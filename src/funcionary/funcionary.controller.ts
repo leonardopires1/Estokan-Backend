@@ -6,6 +6,8 @@ import { UpdateFuncionaryDto } from './dto/update-funcionary.dto';
 import { FindFuncionaryDto } from './dto/find-funcionary.dto';
 import { FuncionaryResponseDto } from './dto/funcionary-response.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { Public } from '../auth/decorators/public.decorator';
+
 
 @ApiTags('functionaries')
 @Controller('funcionary')
@@ -14,9 +16,11 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 export class FuncionaryController {
   constructor(private readonly funcionaryService: FuncionaryService) {}
 
+  
   @Post()
   @ApiOperation({ summary: 'Criar um novo funcionário' })
   @ApiResponse({ status: 201, description: 'Funcionário criado com sucesso.', type: FuncionaryResponseDto })
+  @Public()
   create(@Body() createFuncionaryDto: CreateFuncionaryDto): Promise<FuncionaryResponseDto> {
     return this.funcionaryService.create(createFuncionaryDto);
   }

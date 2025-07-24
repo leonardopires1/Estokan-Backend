@@ -4,13 +4,22 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { FindUserDto } from './dto/find-user.dto';
 import { UserResponseDto } from './dto/user-response.dto';
 import { PrismaService } from '../database/prisma.service';
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class UserService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(createUserDto: CreateUserDto): Promise<UserResponseDto> {
-    return this.prisma.user.create({ data: createUserDto });
+    try {
+      const hashedPassword = await bcrypt.hash(createUserDto.password, 12);
+      const user = await this.prisma.user.create({
+        data: { ...createUserDto, password: hashedPassword },
+      });
+      return user;
+    } catch (error) {
+      throw new Error('Error creating user: ' + error.message);
+    }
   }
 
   async findAll(): Promise<UserResponseDto[]> {

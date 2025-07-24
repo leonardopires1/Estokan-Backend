@@ -13,7 +13,7 @@ export class FuncionaryService {
   async create(createFuncionaryDto: CreateFuncionaryDto): Promise<FuncionaryResponseDto> {
     try {
       // Hash da senha antes de salvar
-      const hashedPassword = await bcrypt.hash(createFuncionaryDto.password, 10);
+      const hashedPassword = await bcrypt.hash(createFuncionaryDto.password, 12);
       
       const functionary = await this.prisma.funcionary.create({ 
         data: {

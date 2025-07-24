@@ -25,12 +25,6 @@ export class CreateSupplierDto {
     @IsNotEmpty({ message: 'Email é obrigatório' })
     email: string;
 
-    @ApiProperty({ example: 'senha123', description: 'Senha de acesso do fornecedor' })
-    @IsString({ message: 'Senha deve ser uma string' })
-    @IsNotEmpty({ message: 'Senha é obrigatória' })
-    @MinLength(6, { message: 'Senha deve ter pelo menos 6 caracteres' })
-    password: string;
-
     @ApiProperty({ example: 'São Paulo, SP', description: 'Localização do fornecedor' })
     @IsString({ message: 'Localização deve ser uma string' })
     @IsNotEmpty({ message: 'Localização é obrigatória' })
