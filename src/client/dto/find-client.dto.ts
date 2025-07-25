@@ -9,10 +9,10 @@ import {
 } from 'class-validator';
 import { Type } from 'class-transformer';
 
-export class FindUserDto {
+export class FindClientDto {
     @ApiProperty({ 
         example: 1, 
-        description: 'ID do usuário para busca',
+        description: 'ID do cliente para busca',
         required: false 
     })
     @IsOptional()
@@ -22,7 +22,7 @@ export class FindUserDto {
 
     @ApiProperty({ 
         example: '12345678901', 
-        description: 'CPF do usuário para busca',
+        description: 'CPF do cliente para busca',
         required: false 
     })
     @IsOptional()
@@ -33,7 +33,7 @@ export class FindUserDto {
 
     @ApiProperty({ 
         example: 'john.doe@example.com', 
-        description: 'Email do usuário para busca',
+        description: 'Email do cliente para busca',
         required: false 
     })
     @IsOptional()

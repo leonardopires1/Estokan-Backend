@@ -5,6 +5,7 @@ import { FindFuncionaryDto } from './dto/find-funcionary.dto';
 import { FuncionaryResponseDto } from './dto/funcionary-response.dto';
 import { PrismaService } from '../database/prisma.service';
 import * as bcrypt from 'bcryptjs';
+import { UpdateWorkDto } from 'src/work/dto/update-work.dto';
 
 @Injectable()
 export class FuncionaryService {
@@ -15,10 +16,12 @@ export class FuncionaryService {
       // Hash da senha antes de salvar
       const hashedPassword = await bcrypt.hash(createFuncionaryDto.password, 12);
       
+      const { workId, ...rest } = createFuncionaryDto;
       const functionary = await this.prisma.funcionary.create({ 
         data: {
-          ...createFuncionaryDto,
+          ...rest,
           password: hashedPassword,
+          ...(workId && { work: { connect: { id: workId } } }),
         },
         include: {
           work: true,
@@ -35,6 +38,9 @@ export class FuncionaryService {
         }
         if (error.meta?.target?.includes('email')) {
           throw new ConflictException('Email já cadastrado');
+        }
+        if (error.meta?.target?.includes('phone')) {
+          throw new ConflictException('Telefone já cadastrado');
         }
       }
       throw error;
@@ -101,6 +107,93 @@ export class FuncionaryService {
       data: updateFuncionaryDto,
       include: { work: true },
     });
+  }
+
+  async assignWork(id: number, workId: number | null): Promise<FuncionaryResponseDto> {
+    // Verifica se o funcionário existe
+    const funcionary = await this.prisma.funcionary.findUnique({ where: { id } });
+    if (!funcionary) {
+      throw new NotFoundException(`Funcionário com ID ${id} não encontrado`);
+    }
+
+    // Atualiza a obra associada ao funcionário
+    try {
+      if (workId) {
+        // Se workId for fornecido, conecta o funcionário à obra
+        return this.prisma.funcionary.update({
+          where: { id },
+          data: {
+            work: { connect: { id: workId } },
+          },
+          include: { work: true },
+        });
+      } else {
+        // Se workId não for fornecido, desconecta a obra
+        return this.prisma.funcionary.update({
+          where: { id },
+          data: {
+            work: { disconnect: true },
+          },
+          include: { work: true },
+        });
+      }
+    } catch (error) {
+      if (error.code === 'P2025') {
+        throw new NotFoundException(`Funcionário com ID ${id} não encontrado`);
+      }
+      throw error;
+    }
+  }
+
+  async assignEquipaments(id: number, equipamentIds: number[]): Promise<FuncionaryResponseDto> {
+    // Verifica se o funcionário existe
+    const funcionary = await this.prisma.funcionary.findUnique({ where: { id } });
+    if (!funcionary) {
+      throw new NotFoundException(`Funcionário com ID ${id} não encontrado`);
+    }
+
+    // Atualiza os equipamentos associados ao funcionário
+    try {
+      return this.prisma.funcionary.update({
+        where: { id },
+        data: {
+          equipaments: {
+            set: equipamentIds.map((equipamentId) => ({ id: equipamentId })),
+          },
+        },
+        include: { work: true, equipaments: true },
+      });
+    } catch (error) {
+      if (error.code === 'P2025') {
+        throw new NotFoundException(`Funcionário com ID ${id} não encontrado`);
+      }
+      throw error;
+    }
+  }
+
+  async unassignEquipaments(id: number, equipamentIds: number[]): Promise<FuncionaryResponseDto> {
+    // Verifica se o funcionário existe
+    const funcionary = await this.prisma.funcionary.findUnique({ where: { id } });
+    if (!funcionary) {
+      throw new NotFoundException(`Funcionário com ID ${id} não encontrado`);
+    }
+    // Atualiza os equipamentos associados ao funcionário
+    try {
+      return this.prisma.funcionary.update({
+        where: { id },
+        data: {
+          equipaments: {
+            disconnect: equipamentIds.map((equipamentId) => ({ id: equipamentId })),
+          },
+        },
+        include: { work: true, equipaments: true },
+      });
+    } catch (error) {
+      if (error.code === 'P2025') {
+        throw new NotFoundException(`Funcionário com ID ${id} não encontrado`);
+      }
+      throw error;
+    }
   }
 
   async remove(id: number): Promise<FuncionaryResponseDto> {

@@ -19,7 +19,6 @@ export class EquipamentsService {
             cnpj: true,
             name: true,
             email: true,
-            location: true,
           },
         },
         functionary: {
@@ -51,7 +50,6 @@ export class EquipamentsService {
             cnpj: true,
             name: true,
             email: true,
-            location: true,
           },
         },
         functionary: {
@@ -84,7 +82,6 @@ export class EquipamentsService {
             cnpj: true,
             name: true,
             email: true,
-            location: true,
           },
         },
         functionary: {
@@ -130,7 +127,6 @@ export class EquipamentsService {
             cnpj: true,
             name: true,
             email: true,
-            location: true,
           },
         },
         functionary: {
@@ -166,7 +162,72 @@ export class EquipamentsService {
             cnpj: true,
             name: true,
             email: true,
-            location: true,
+          },
+        },
+        functionary: {
+          select: {
+            id: true,
+            cpf: true,
+            name: true,
+            email: true,
+          },
+        },
+        work: {
+          select: {
+            id: true,
+            title: true,
+            description: true,
+            ownerCpf: true,
+          },
+        },
+      },
+    });
+  }
+
+  async assignSupplier(id: number, supplierId: number | null): Promise<EquipamentResponseDto> {
+    return this.prisma.equipament.update({
+      where: { id },
+      data: { supplierId },
+      include: {
+        supplier: {
+          select: {
+            id: true,
+            cnpj: true,
+            name: true,
+            email: true,
+          },
+        },
+        functionary: {
+          select: {
+            id: true,
+            cpf: true,
+            name: true,
+            email: true,
+          },
+        },
+        work: {
+          select: {
+            id: true,
+            title: true,
+            description: true,
+            ownerCpf: true,
+          },
+        },
+      },
+    });
+  }
+
+  async assignWork(id: number, workId: number | null): Promise<EquipamentResponseDto> {
+    return this.prisma.equipament.update({
+      where: { id },
+      data: { workId, status: 'EM_USO' }, 
+      include: {
+        supplier: {
+          select: {
+            id: true,
+            cnpj: true,
+            name: true,
+            email: true,
           },
         },
         functionary: {
@@ -199,7 +260,6 @@ export class EquipamentsService {
             cnpj: true,
             name: true,
             email: true,
-            location: true,
           },
         },
         functionary: {

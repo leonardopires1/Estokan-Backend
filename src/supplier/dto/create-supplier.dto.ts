@@ -25,9 +25,13 @@ export class CreateSupplierDto {
     @IsNotEmpty({ message: 'Email é obrigatório' })
     email: string;
 
-    @ApiProperty({ example: 'São Paulo, SP', description: 'Localização do fornecedor' })
-    @IsString({ message: 'Localização deve ser uma string' })
-    @IsNotEmpty({ message: 'Localização é obrigatória' })
-    @MinLength(2, { message: 'Localização deve ter pelo menos 2 caracteres' })
-    location: string;
+    @ApiProperty({ example: '(11) 91234-5678', description: 'Telefone de contato do fornecedor' })
+    @IsString({ message: 'Telefone deve ser uma string' })
+    @IsNotEmpty({ message: 'Telefone é obrigatório' })
+    phone: string;
+
+    @ApiProperty({ example: 'Rua Exemplo, 123, São Paulo, SP', description: 'Endereço do fornecedor' })
+    @IsString({ message: 'Endereço deve ser uma string' })
+    @IsNotEmpty({ message: 'Endereço é obrigatório' })
+    address: string;
 }

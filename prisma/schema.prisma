@@ -7,7 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
+model Client {
   id        Int      @id @default(autoincrement())
   cpf       String   @unique
   name      String
@@ -19,22 +19,24 @@ model User {
 }
 
 model Funcionary {
-  id        Int      @id @default(autoincrement())
-  cpf       String   @unique
-  name      String
-  email     String   @unique
-  password  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  workId    Int?
-  work      Work?    @relation(fields: [workId], references: [id])
+  id          Int          @id @default(autoincrement())
+  cpf         String       @unique
+  name        String
+  email       String       @unique
+  password    String
+  phone       String       @unique
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  workId      Int?
+  work        Work?        @relation(fields: [workId], references: [id])
   equipaments Equipament[]
+  role        roleFuncionary @default(USER)
 }
 
 model Work {
   id            Int          @id @default(autoincrement())
-  ownerCpf     String
-  owner         User         @relation(fields: [ownerCpf], references: [cpf])
+  ownerCpf      String
+  owner         Client         @relation(fields: [ownerCpf], references: [cpf])
   title         String
   description   String
   createdAt     DateTime     @default(now())
@@ -44,30 +46,31 @@ model Work {
 }
 
 model Supplier {
-  id        Int      @id @default(autoincrement())
-  cnpj      String   @unique
-  name      String
-  email     String   @unique
-  location  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          Int          @id @default(autoincrement())
+  cnpj        String       @unique
+  name        String
+  email       String       @unique
+  phone       String
+  address     String
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
   equipaments Equipament[]
 }
 
 model Equipament {
-  id          Int      @id @default(autoincrement())
-  name        String
-  description String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  supplierId  Int?
-  supplier    Supplier? @relation(fields: [supplierId], references: [id])
+  id            Int              @id @default(autoincrement())
+  name          String
+  description   String
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+  supplierId    Int?
+  supplier      Supplier?        @relation(fields: [supplierId], references: [id])
   functionaryId Int?
-  functionary Funcionary? @relation(fields: [functionaryId], references: [id])
-  workId      Int?
-  work        Work?    @relation(fields: [workId], references: [id])
-  type        TypeEquipament
-  status      statusEquipament
+  functionary   Funcionary?      @relation(fields: [functionaryId], references: [id])
+  workId        Int?
+  work          Work?            @relation(fields: [workId], references: [id])
+  type          TypeEquipament
+  status        statusEquipament
 }
 
 enum TypeEquipament {
@@ -82,4 +85,9 @@ enum statusEquipament {
   EM_USO
   MANUTENCAO
   PERDIDO
+}
+
+enum roleFuncionary {
+  ADMIN
+  USER
 }

@@ -65,7 +65,6 @@ export class SupplierController {
   @ApiQuery({ name: 'cnpj', required: false, description: 'CNPJ do fornecedor' })
   @ApiQuery({ name: 'name', required: false, description: 'Nome do fornecedor (busca parcial)' })
   @ApiQuery({ name: 'email', required: false, description: 'Email do fornecedor' })
-  @ApiQuery({ name: 'location', required: false, description: 'Localização do fornecedor (busca parcial)' })
   @ApiResponse({ 
     status: 200, 
     description: 'Fornecedores encontrados', 

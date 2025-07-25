@@ -33,4 +33,12 @@ export class WorkResponseDto {
         name: string;
         email: string;
     }>;
+
+    equipaments?: Array<{
+        id: number;
+        name: string;
+        description: string;
+        createdAt: Date;
+        updatedAt: Date;
+    }>;
 }

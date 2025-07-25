@@ -81,7 +81,7 @@ export class SupplierService {
   }
 
   async search(findSupplierDto: FindSupplierDto): Promise<SupplierResponseDto[]> {
-    const { id, cnpj, name, email, location } = findSupplierDto;
+    const { id, cnpj, name, email } = findSupplierDto;
 
     const whereClause: any = {};
 

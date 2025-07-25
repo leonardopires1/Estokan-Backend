@@ -46,7 +46,6 @@ export class EquipamentResponseDto {
         cnpj: string;
         name: string;
         email: string;
-        location: string;
     } | null;
 
     functionary?: {

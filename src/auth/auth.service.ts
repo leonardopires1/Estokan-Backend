@@ -34,17 +34,17 @@ export class AuthService {
     }
 
     async login(loginDto: LoginDto): Promise<AuthResponseDto> {
-        const user = await this.validateUser(loginDto.email, loginDto.password);
+        const client = await this.validateUser(loginDto.email, loginDto.password);
         
-        if (!user) {
+        if (!client) {
             throw new UnauthorizedException('Email ou senha incorretos');
         }
 
         const payload = { 
-            email: user.email, 
-            sub: user.id,
-            name: user.name,
-            cpf: user.cpf
+            email: client.email, 
+            sub: client.id,
+            name: client.name,
+            cpf: client.cpf
         };
 
         const access_token = this.jwtService.sign(payload);
@@ -52,13 +52,13 @@ export class AuthService {
         return {
             access_token,
             token_type: 'Bearer',
-            expires_in: 3600, // 1 hora
-            user: {
-                id: user.id,
-                cpf: user.cpf,
-                name: user.name,
-                email: user.email,
-                workId: user.workId
+            expires_in: 432000, // 5 dias
+            client: {
+                id: client.id,
+                cpf: client.cpf,
+                name: client.name,
+                email: client.email,
+                workId: client.workId
             }
         };
     }

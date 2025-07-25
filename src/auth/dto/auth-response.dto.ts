@@ -30,7 +30,7 @@ export class AuthResponseDto {
             workId: { type: 'number', nullable: true }
         }
     })
-    user: {
+    client: {
         id: number;
         cpf: string;
         name: string;

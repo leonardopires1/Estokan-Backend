@@ -188,6 +188,154 @@ export class WorkService {
     });
   }
 
+  async assignClient(workId: number, clientCpf: string): Promise<WorkResponseDto> {
+    // Atualiza o proprietário da obra existente
+    return this.prisma.work.update({ 
+      where: { id: workId }, 
+      data: { 
+        ownerCpf: clientCpf
+      },
+      include: {
+        owner: {
+          select: {
+            id: true,
+            cpf: true,
+            name: true,
+            email: true,
+          },
+        },
+        functionaries: {
+          select: {
+            id: true,
+            cpf: true,
+            name: true,
+            email: true,
+          },
+        },
+      },
+    });
+  }
+
+  async assignEquipament(workId: number, equipamentId: number): Promise<WorkResponseDto> {
+    // Adiciona um equipamento à obra existente
+    return this.prisma.work.update({ 
+      where: { id: workId }, 
+      data: { 
+        equipaments: {
+          connect: { id: equipamentId }
+        }
+      },
+      include: {
+        owner: {
+          select: {
+            id: true,
+            cpf: true,
+            name: true,
+            email: true,
+          },
+        },
+        functionaries: {
+          select: {
+            id: true,
+            cpf: true,
+            name: true,
+            email: true,
+          },
+        },
+      },
+    });
+  }
+
+  async unassignEquipament(workId: number, equipamentId: number): Promise<WorkResponseDto> {
+    // Remove um equipamento da obra existente
+    return this.prisma.work.update({ 
+      where: { id: workId }, 
+      data: { 
+        equipaments: {
+          disconnect: { id: equipamentId }
+        }
+      },
+      include: {
+        owner: {
+          select: {
+            id: true,
+            cpf: true,
+            name: true,
+            email: true,
+          },
+        },
+        functionaries: {
+          select: {
+            id: true,
+            cpf: true,
+            name: true,
+            email: true,
+          },
+        },
+      },
+    });
+  }
+
+  async assignFunctionary(workId: number, functionaryCpf: string): Promise<WorkResponseDto> {
+    // Adiciona um funcionário à obra existente
+    return this.prisma.work.update({ 
+      where: { id: workId }, 
+      data: { 
+        functionaries: {
+          connect: { cpf: functionaryCpf } // ← Use CPF em vez de ID
+        }
+      },
+      include: {
+        owner: {
+          select: {
+            id: true,
+            cpf: true,
+            name: true,
+            email: true,
+          },
+        },
+        functionaries: {
+          select: {
+            id: true,
+            cpf: true,
+            name: true,
+            email: true,
+          },
+        },
+      },
+    });
+  }
+
+  async unassignFunctionary(workId: number, functionaryCpf: string): Promise<WorkResponseDto> {
+    // Remove um funcionário da obra existente
+    return this.prisma.work.update({ 
+      where: { id: workId }, 
+      data: { 
+        functionaries: {
+          disconnect: { cpf: functionaryCpf } // ← Use CPF em vez de ID
+        }
+      },
+      include: {
+        owner: {
+          select: {
+            id: true,
+            cpf: true,
+            name: true,
+            email: true,
+          },
+        },
+        functionaries: {
+          select: {
+            id: true,
+            cpf: true,
+            name: true,
+            email: true,
+          },
+        },
+      },
+    });
+  }
+
   async remove(id: number): Promise<WorkResponseDto> {
     return this.prisma.work.delete({ 
       where: { id },

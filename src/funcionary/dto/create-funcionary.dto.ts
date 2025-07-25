@@ -36,9 +36,21 @@ export class CreateFuncionaryDto {
     @MinLength(6, { message: 'Senha deve ter pelo menos 6 caracteres' })
     password: string;
 
+    @ApiProperty({ example: '14981234567', description: 'Número de telefone do funcionário (opcional)' })
+    @IsString({ message: 'Telefone deve ser uma string' })
+    @IsNotEmpty({ message: 'Telefone é obrigatório' })
+    @Length(11, 11, { message: 'Telefone deve conter exatamente 11 dígitos com o DDD' })
+    @Matches(/^\d{11}$/, { message: 'Telefone deve conter apenas números' })
+    phone: string;
+
     @ApiProperty({ example: 1, description: 'ID da obra (opcional)', required: false })
     @IsOptional()
     @IsNumber({}, { message: 'ID da obra deve ser um número' })
     @Type(() => Number)
     workId?: number;
+
+    @ApiProperty({ example: 'USER', description: 'Função do funcionário', enum: ['ADMIN', 'USER'], default: 'USER' })
+    @IsString({ message: 'Função deve ser uma string' })
+    @IsNotEmpty({ message: 'Função é obrigatória' })
+    role: 'ADMIN' | 'USER' = 'USER'; 
 }

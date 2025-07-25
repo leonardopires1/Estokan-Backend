@@ -13,8 +13,11 @@ export class SupplierResponseDto {
     @ApiProperty({ example: 'contato@fornecedorxyz.com', description: 'Email de contato do fornecedor' })
     email: string;
 
-    @ApiProperty({ example: 'São Paulo, SP', description: 'Localização do fornecedor' })
-    location: string;
+    @ApiProperty({ example: '(11) 91234-5678', description: 'Telefone de contato do fornecedor' })
+    phone: string;
+
+    @ApiProperty({ example: 'Rua Exemplo, 123, São Paulo, SP', description: 'Endereço do fornecedor' })
+    address: string;
 
     @ApiProperty({ example: '2024-07-24T12:00:00Z', description: 'Data de criação' })
     createdAt: Date;

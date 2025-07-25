@@ -43,13 +43,4 @@ export class FindSupplierDto {
     @IsOptional()
     @IsString({ message: 'Email deve ser uma string' })
     email?: string;
-
-    @ApiProperty({ 
-        example: 'São Paulo', 
-        description: 'Localização do fornecedor (busca parcial)',
-        required: false 
-    })
-    @IsOptional()
-    @IsString({ message: 'Localização deve ser uma string' })
-    location?: string;
 }

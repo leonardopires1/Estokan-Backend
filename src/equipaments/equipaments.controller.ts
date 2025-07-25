@@ -6,6 +6,7 @@ import { UpdateEquipamentDto } from './dto/update-equipament.dto';
 import { FindEquipamentDto } from './dto/find-equipament.dto';
 import { EquipamentResponseDto } from './dto/equipament-response.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { AssignWorkDto } from 'src/funcionary/dto/assign-work.dto';
 
 @ApiTags('equipaments')
 @Controller('equipaments')
@@ -47,6 +48,20 @@ export class EquipamentsController {
   @ApiResponse({ status: 200, description: 'Equipamento atualizado.', type: EquipamentResponseDto })
   update(@Param('id') id: string, @Body() updateEquipamentDto: UpdateEquipamentDto): Promise<EquipamentResponseDto> {
     return this.equipamentsService.update(+id, updateEquipamentDto);
+  }
+
+  @Patch(':id/assign-supplier')
+  @ApiOperation({ summary: 'Atualizar fornecedor associado ao equipamento' })
+  @ApiResponse({ status: 200, description: 'Fornecedor associado ao equipamento.', type: EquipamentResponseDto })
+  assignSupplier(@Param('id') id: string, @Body() supplierId: number | null): Promise<EquipamentResponseDto> {
+    return this.equipamentsService.assignSupplier(+id, supplierId);
+  }
+
+  @Patch(':id/assign-work')
+  @ApiOperation({ summary: 'Atualizar obra associada ao equipamento' })
+  @ApiResponse({ status: 200, description: 'Obra associada ao equipamento.', type: EquipamentResponseDto })
+  assignWork(@Param('id') id: string, @Body() assignWorkDto: AssignWorkDto): Promise<EquipamentResponseDto> {
+    return this.equipamentsService.assignWork(+id, assignWorkDto.workId ?? null);
   }
 
   @Delete(':id')
